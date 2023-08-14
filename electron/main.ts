@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow,dialog } from "electron";
 
 app.whenReady().then(() => {
   const win = new BrowserWindow({
@@ -15,5 +15,6 @@ app.whenReady().then(() => {
 
   //判断是否打包
    console.log(app.isPackaged)
-   console.log(process.env)
+   //弹窗提示
+    dialog.showMessageBox({message: `是否打包${app.isPackaged}`, title: 'Hello', type: 'info'});  
 });
