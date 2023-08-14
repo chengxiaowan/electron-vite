@@ -16,10 +16,15 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": false,
     "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@": ["./src"],
+      "@/*": ["./src/*"]
+    },
+    "types": ["element-plus/global"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue","electron/*.ts","electron/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
