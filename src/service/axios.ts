@@ -1,3 +1,9 @@
+/**
+ * 单实例版本，已废弃
+ * 请使用更加科学的requst.ts
+ */
+
+
 import axios from "axios";
 import { ElNotification } from "element-plus";
 // import { useTokenStore } from "@/store/token";
