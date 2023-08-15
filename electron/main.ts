@@ -1,20 +1,59 @@
-import { app, BrowserWindow,dialog } from "electron";
+import { app, BrowserWindow } from "electron";
+import path from "path";
+import { commonService } from "./service/common.service";
+import { autoUpdate } from "./autoUpdate/autoUpdate";
+import { registerIpcEvents } from "./service/ipcEvent.service";
 
-app.whenReady().then(() => {
-  const win = new BrowserWindow({
-    title: "Main window",
+
+//获取当前环境
+const env = process.env.NODE_ENV;
+//配置
+let config: any = {};
+//窗口对象
+let win: BrowserWindow;
+
+const createWindow = async () => {
+  win = new BrowserWindow({
+    webPreferences: {
+      devTools: true,
+      // 集成网页和 Node.js，也就是在渲染进程中，可以调用 Node.js 方法
+      nodeIntegration: true,
+      contextIsolation: false,
+      webSecurity: false,
+    },
+    fullscreen:config.fullscreen,
+    width: config.width,
+    height: config.height,
   });
 
-  // You can use `process.env.VITE_DEV_SERVER_URL` when the vite command is called `serve`
+  //加载页面
   if (process.env.VITE_DEV_SERVER_URL) {
     win.loadURL(process.env.VITE_DEV_SERVER_URL);
   } else {
-    // Load your file
     win.loadFile("dist/index.html");
   }
 
-  //判断是否打包
-   console.log(app.isPackaged)
-   //弹窗提示
-    dialog.showMessageBox({message: `是否打包${app.isPackaged}`, title: 'Hello', type: 'info'});  
-});
+  if (env === "development" || config.openDevTools) {
+    win.webContents.openDevTools();
+  }
+
+  registerIpcEvents();
+};
+
+app
+  .whenReady()
+  .then(async () => {
+    const { initApp, readConfig } = commonService();
+    //初始化应用
+    await initApp();
+    //读取配置
+    config = await readConfig();
+  })
+  .then(async () => {
+    //创建窗口
+    await createWindow();
+  })
+  .then(async () => {
+    //自动更新
+    autoUpdate(config, win);
+  })

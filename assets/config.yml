@@ -1,0 +1,10 @@
+#是否开启调试模式
+openDevTools: false
+#是否开启全屏模式
+fullscreen: false
+#窗口宽高
+width: 800
+#窗口高度
+height: 600
+#更新地址
+uploadServe: http://127.0.0.1:5500
